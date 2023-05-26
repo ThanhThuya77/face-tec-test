@@ -1,0 +1,78 @@
+{
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "rules": {
+        "quotes": [2, "single"],
+        "no-unused-vars": [
+            "error",
+            {
+                "vars": "all",
+                "ignoreRestSiblings": false
+            }
+        ],
+        "linebreak-style": "off",
+        "react/jsx-filename-extension": [
+            1, 
+            { 
+                "extensions": [".js", ".jsx"] 
+            }
+        ],
+        "react/prop-types": "off",
+        "react/jsx-indent-props": [0, 4],
+        "react/jsx-indent": [0, 4],
+        "react/require-default-props": "off",
+        "react/forbid-prop-types": 0,
+        "import/no-mutable-exports": "off",
+        "react/prefer-stateless-function": ["off"],
+        "max-len": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "arrow-parens": "off",
+        "import/prefer-default-export": "off",
+        "prefer-destructuring": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/destructuring-assignment": "off",
+        "no-trailing-spaces": "off",
+        "object-curly-newline": "off",
+        "no-use-before-define": "off",
+        "no-param-reassign": "off",
+        "import/no-named-as-default": "off",
+        "react/self-closing-comp": "off",
+        "arrow-body-style": "off",
+        "no-underscore-dangle": "off",
+        "no-redeclare": "off",
+        "import/no-extraneous-dependencies": "off",
+        "react/jsx-closing-bracket-location": "off",
+        "implicit-arrow-linebreak": "off",
+        "react/jsx-closing-tag-location": "off",
+        "indent": "off",
+        "react/static-property-placement": "off",
+        "operator-linebreak": "off",
+        "function-paren-newline": "off",
+        "no-case-declarations": "off",
+        "react/no-unescaped-entities": [
+            "error", 
+            { 
+                "forbid": [">", "}"] 
+            }
+        ],
+        "no-console": "off",
+        "no-unused-expressions": "off",
+        "jsx-a11y/href-no-hash": "off",
+        "jsx-a11y/label-has-for": "off",
+        "jsx-a11y/anchor-has-content": "off",
+        "no-new": 0,
+        "no-shadow": "off"
+    },
+    "env": {
+        "browser": true,
+        "jest/globals": true
+    },
+    "plugins": ["jest"],
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "paths": ["src"]
+            }
+        }
+    }
+}

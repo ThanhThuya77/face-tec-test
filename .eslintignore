@@ -1,0 +1,3 @@
+src/registerServiceWorker.js
+src/components/core-sdk
+src/components/core-sdk/FaceTecSDK.js/FaceTecSDK.js
