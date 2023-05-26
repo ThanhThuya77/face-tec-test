@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { FaceTecSDK } from '../../components/core-sdk/FaceTecSDK.js/FaceTecSDK';
 import { FaceTecConfig } from '../../faceTecConfig';
 import { LivenessCheckProcessor } from '../../components/processors/LivenessCheckProcessor';
+import Loading from '../../components/loading/index';
 
 const FaceTec = () => {
   const [displayStatusInit, setDisplayStatusInit] = useState('Initializing...');
   const [isInitializedFaceTec, setIsInitializedFaceTec] = useState(false);
+  const [isStartLiveness, setIsStartLiveness] = useState(false);
   const [livenessStatus, setLivenessStatus] = useState('');
   let latestProcessor;
 
@@ -48,6 +50,7 @@ const FaceTec = () => {
     // Get a Session Token from the FaceTec SDK, then start the 3D Liveness Check.
     getSessionToken(function (sessionToken) {
       latestProcessor = new LivenessCheckProcessor(sessionToken, onComplete);
+      setIsStartLiveness(true);
     });
   };
 
@@ -96,7 +99,6 @@ const FaceTec = () => {
   function onComplete() {
     // SampleAppUtilities.showMainUI();
     console.log('SampleAppUtilities.showMainUI()');
-
     if (!latestProcessor.isSuccess()) {
       // Reset the enrollment identifier.
       //   latestEnrollmentIdentifier = "";
@@ -107,17 +109,31 @@ const FaceTec = () => {
       return;
     }
     setLivenessStatus('Success');
+    window.location.replace("/next-step")
     // Show successful message to screen
     // SampleAppUtilities.displayStatus("Success");
   }
 
   return (
-    <div>
-      <p>
-        isInitializedFaceTec: {isInitializedFaceTec} : {displayStatusInit}
-      </p>
-      <button onClick={() => capture()}>Capture photo</button>
-      <p>livenessStatus: {livenessStatus}</p>
+    <div className="face-tec">
+      {!isInitializedFaceTec ? <Loading /> : null}
+      <div>
+        {/* <p>livenessStatus: {livenessStatus}</p> */}
+        <h2>Selfie check</h2>
+        <p>
+          To make things easier and more secure, we just need to quickly check your face using your
+          phone camera.
+        </p>
+        <div style={{ marginTop: '20px' }}>
+          <p>1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <p>2. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <p>3. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+      </div>
+
+      <button className="btn" onClick={() => capture()}>
+        Let's do it
+      </button>
     </div>
   );
 };
