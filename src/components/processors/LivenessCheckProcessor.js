@@ -2,8 +2,8 @@
 // Welcome to the annotated FaceTec Device SDK core code for performing secure Liveness Checks!
 //
 
+import { FaceTecSDK } from 'face-tec-test/FaceTecSDK.js/FaceTecSDK';
 import { FaceTecConfig } from '../../faceTecConfig';
-import { FaceTecSDK } from '../core-sdk/FaceTecSDK.js/FaceTecSDK';
 
 //
 // This is an example self-contained class to perform Liveness Checks with the FaceTec SDK.
@@ -11,6 +11,7 @@ import { FaceTecSDK } from '../core-sdk/FaceTecSDK.js/FaceTecSDK';
 //
 export class LivenessCheckProcessor {
   latestNetworkRequest = new XMLHttpRequest();
+
   latestSessionResult;
 
   //
@@ -18,6 +19,7 @@ export class LivenessCheckProcessor {
   // In the code in your own App, you can pass around signals, flags, intermediates, and results however you would like.
   //
   success;
+
   onComplete;
 
   constructor(sessionToken, onComplete) {
@@ -53,8 +55,8 @@ export class LivenessCheckProcessor {
     //
     if (sessionResult.status !== FaceTecSDK.FaceTecSessionStatus.SessionCompletedSuccessfully) {
       console.log(
-        'Session was not completed successfully, cancelling.  Session Status: ' +
-          FaceTecSDK.FaceTecSessionStatus[sessionResult.status],
+        `Session was not completed successfully, cancelling.  Session Status: ${ 
+          FaceTecSDK.FaceTecSessionStatus[sessionResult.status]}`,
       );
       this.latestNetworkRequest.abort();
       faceScanResultCallback.cancel();
@@ -67,7 +69,7 @@ export class LivenessCheckProcessor {
     //
     // Part 4:  Get essential data off the FaceTecSessionResult
     //
-    var parameters = {
+    const parameters = {
       faceScan: sessionResult.faceScan,
       auditTrailImage: sessionResult.auditTrail[0],
       lowQualityAuditTrailImage: sessionResult.lowQualityAuditTrail[0],
@@ -78,7 +80,7 @@ export class LivenessCheckProcessor {
     // Part 5:  Make the Networking Call to Your Servers.  Below is just example code, you are free to customize based on how your own API works.
     //
     this.latestNetworkRequest = new XMLHttpRequest();
-    this.latestNetworkRequest.open('POST', FaceTecConfig.BaseURL + '/liveness-3d');
+    this.latestNetworkRequest.open('POST', `${FaceTecConfig.BaseURL}/liveness-3d`);
     this.latestNetworkRequest.setRequestHeader('Content-Type', 'application/json');
 
     this.latestNetworkRequest.setRequestHeader('X-Device-Key', FaceTecConfig.DeviceKeyIdentifier);
@@ -137,7 +139,7 @@ export class LivenessCheckProcessor {
     //
     console.log('5 -- upload onprogress');
     this.latestNetworkRequest.upload.onprogress = (event) => {
-      var progress = event.loaded / event.total;
+      const progress = event.loaded / event.total;
       console.log('5 -- upload % ', progress);
       faceScanResultCallback.uploadProgress(progress);
     };
@@ -145,7 +147,7 @@ export class LivenessCheckProcessor {
     //
     // Part 8:  Actually send the request.
     //
-    var jsonStringToUpload = JSON.stringify(parameters);
+    const jsonStringToUpload = JSON.stringify(parameters);
     console.log('6', jsonStringToUpload);
     this.latestNetworkRequest.send(jsonStringToUpload);
 

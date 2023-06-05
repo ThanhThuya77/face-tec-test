@@ -1,4 +1,4 @@
-export const FaceTecConfig = (function () {
+export const FaceTecConfig = (function FaceTecName() {
   // -------------------------------------
   // REQUIRED
   // Available at https://dev.facetec.com/#/account
@@ -34,4 +34,4 @@ export const FaceTecConfig = (function () {
     BaseURL,
     PublicFaceScanEncryptionKey,
   };
-})();
+}());

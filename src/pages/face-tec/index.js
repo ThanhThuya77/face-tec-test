@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaceTecSDK } from '../../components/core-sdk/FaceTecSDK.js/FaceTecSDK';
+import { FaceTecSDK } from 'face-tec-test/FaceTecSDK.js/FaceTecSDK';
 import { FaceTecConfig } from '../../faceTecConfig';
 import { LivenessCheckProcessor } from '../../components/processors/LivenessCheckProcessor';
 import Loading from '../../components/loading/index';
@@ -10,6 +10,8 @@ const FaceTec = () => {
   const [isStartLiveness, setIsStartLiveness] = useState(false);
   const [livenessStatus, setLivenessStatus] = useState('');
   let latestProcessor;
+
+  console.log('FaceTec', displayStatusInit, isStartLiveness, livenessStatus);
 
   useEffect(() => {
     // Set a the directory path for other FaceTec Browser SDK Resources.
@@ -22,7 +24,7 @@ const FaceTec = () => {
     FaceTecSDK.initializeInDevelopmentMode(
       FaceTecConfig.DeviceKeyIdentifier,
       FaceTecConfig.PublicFaceScanEncryptionKey,
-      function (initializedSuccessfully) {
+      (initializedSuccessfully) => {
         console.log('window.onload 1 call FaceTecSDK');
         if (initializedSuccessfully) {
           // SampleAppUtilities.enableAllButtons();
@@ -48,7 +50,7 @@ const FaceTec = () => {
     // SampleAppUtilities.fadeOutMainUIAndPrepareForSession();
     console.log('0');
     // Get a Session Token from the FaceTec SDK, then start the 3D Liveness Check.
-    getSessionToken(function (sessionToken) {
+    getSessionToken((sessionToken) => {
       latestProcessor = new LivenessCheckProcessor(sessionToken, onComplete);
       setIsStartLiveness(true);
     });
@@ -56,8 +58,8 @@ const FaceTec = () => {
 
   // Get the Session Token from the server
   function getSessionToken(sessionTokenCallback) {
-    var XHR = new XMLHttpRequest();
-    XHR.open('GET', FaceTecConfig.BaseURL + '/session-token');
+    const XHR = new XMLHttpRequest();
+    XHR.open('GET', `${FaceTecConfig.BaseURL}/session-token`);
     XHR.setRequestHeader('X-Device-Key', FaceTecConfig.DeviceKeyIdentifier);
     XHR.setRequestHeader(
       'X-User-Agent',
@@ -65,11 +67,11 @@ const FaceTec = () => {
       // faceTecSDK.current.createFaceTecAPIUserAgentString("")
     );
     XHR.onreadystatechange = function () {
-      if (this.readyState === XMLHttpRequest.DONE) {
-        var sessionToken = '';
+      if (XHR.readyState === XMLHttpRequest.DONE) {
+        let sessionToken = '';
         try {
           // Attempt to get the sessionToken from the response object.
-          sessionToken = JSON.parse(this.responseText).sessionToken;
+          sessionToken = JSON.parse(XHR.responseText).sessionToken;
           // Something went wrong in parsing the response. Return an error.
           if (typeof sessionToken !== 'string') {
             onServerSessionTokenError();
@@ -109,7 +111,7 @@ const FaceTec = () => {
       return;
     }
     setLivenessStatus('Success');
-    window.location.replace("/next-step")
+    window.location.replace('/next-step');
     // Show successful message to screen
     // SampleAppUtilities.displayStatus("Success");
   }
@@ -131,7 +133,7 @@ const FaceTec = () => {
         </div>
       </div>
 
-      <button className="btn" onClick={() => capture()}>
+      <button type="button" className="btn" onClick={() => capture()}>
         Let's do it
       </button>
     </div>
